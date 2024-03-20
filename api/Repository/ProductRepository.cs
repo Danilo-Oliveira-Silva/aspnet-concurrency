@@ -29,7 +29,13 @@ public class ProductRepository : IProductRepository
     {
         var id = new ObjectId(Guid);
         var filter = new BsonDocument { { "_id", id } };
-        var update = Builders<Product>.Update.Set(p => p.Stock, 11);
-        var product = await _database.GetCollection<Product>("products").UpdateOneAsync(filter, update);
+
+        var product = await _database.GetCollection<Product>("products").Find(filter).SingleAsync();
+        
+        if (product.Stock < Quantity) throw new Exception("Stock insufficient");
+
+        int newStock = product.Stock - Quantity;
+        var update = Builders<Product>.Update.Set(p => p.Stock, newStock);
+        await _database.GetCollection<Product>("products").UpdateOneAsync(filter, update);
     }
 }

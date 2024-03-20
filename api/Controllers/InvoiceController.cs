@@ -22,7 +22,16 @@ public class InvoiceController : ControllerBase
     [HttpPatch("remove/{Product}/{Quant}")]
     public async Task<IActionResult> RemovefromStock(string Product, int Quant)
     {
-        await _repository.RemoveFromStock(Product, Quant);
-        return Ok();
+        try
+        {
+            await _repository.RemoveFromStock(Product, Quant);
+            return Ok();
+        }
+        catch(Exception err)
+        {
+            return Conflict(new { message = err.Message.ToString() });
+        }
+        
+        
     }
 }
