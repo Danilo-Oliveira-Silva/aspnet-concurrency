@@ -6,7 +6,7 @@ const uptimeTrendCheck = new Trend('get_products_response_time');
 
 export const options = {
   vus: 1,
-  duration: '5s',
+  duration: '10s',
   iterations: 1
 };
 
