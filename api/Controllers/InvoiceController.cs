@@ -31,7 +31,20 @@ public class InvoiceController : ControllerBase
         {
             return Conflict(new { message = err.Message.ToString() });
         }
-        
-        
+    }
+
+     [HttpPatch("add/{Product}/{Quant}")]
+    public async Task<IActionResult> AddIntoStock(string Product, int Quant)
+    {
+        try
+        {
+            await _repository.AddIntoStock(Product, Quant);
+            //Console.WriteLine("controller - added to stock");
+            return Ok();
+        }
+        catch(Exception err)
+        {
+            return BadRequest(new { message = err.Message.ToString() });
+        }
     }
 }

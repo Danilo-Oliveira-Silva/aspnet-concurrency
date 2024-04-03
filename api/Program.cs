@@ -1,16 +1,26 @@
+using Microsoft.AspNetCore.Mvc;
 using Stock.Context;
+using Stock.Exceptions;
 using Stock.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.Configure<ApiBehaviorOptions>(options
+    => options.SuppressModelStateInvalidFilter = true);
+    
+builder.Services.AddControllers(options => {
+    options.Filters.Add<ExceptionFilter>();
+    //options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = false;
+    //options.Filters.Add<ValidationFilter>();
+});
 
-builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSingleton<IContextConnection, ContextConnection>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<ValidationFilter>();
 
 builder.Services.AddSwaggerGen();
 

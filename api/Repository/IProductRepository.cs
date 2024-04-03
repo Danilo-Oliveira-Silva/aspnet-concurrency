@@ -7,4 +7,5 @@ public interface IProductRepository
     Task<IEnumerable<Product>> Get();
     Task<Product> Add(Product product);
     Task RemoveFromStock(string Guid, int Quantity);
+    Task AddIntoStock(string Guid, int Quantity);
 }
